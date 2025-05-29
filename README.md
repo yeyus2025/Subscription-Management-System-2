@@ -91,12 +91,14 @@
     *   技术：Spring Security (用于认证授权) 是合适的选型。
       
 ![image](https://github.com/user-attachments/assets/35b37771-a905-4e8f-8c32-eaa66745f629)
+
 2.  订阅管理模块 (Subscription Management Module):
     *   职责：处理订阅数据的增删改查、批量操作。
     *   关键功能：订阅数据持久化 (`subscriptions` 表交互)、数据验证、批量操作逻辑实现、数据过滤与分页。
     *   技术：Spring Data JPA (简化数据库操作)。
       
 ![image](https://github.com/user-attachments/assets/a3d12be9-6c86-4cc5-9727-e9a56900c372)
+
 3.  数据备份与恢复模块 (Data Backup & Recovery Module):
     *   职责：实现数据的自动备份和手动触发的备份/恢复功能。
     *   关键功能：定期导出数据库数据（例如为 SQL 文件或 JSON 文件），存储到安全位置；根据备份文件恢复数据库。可以考虑增量备份和全量备份策略。
