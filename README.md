@@ -42,9 +42,9 @@
 采用 MySQL 关系型数据库存储用户和订阅数据。
 
 实体关系图 (概念)
-[//www.plantuml.com/plantuml/png/bP9FgzD05CNt-HINR4pbFTxUrGirnLWJQvku3TF9fHr8PkhyeOHMwCP55wBhhWKNWXMwKVmw3SLlOQPHIULjcjqz-TsJSm-vLvf8RSe2K3eESirq1KQXLB1o01v362V0SlZptDt1IBAIo0g6M84t6lOQwhK_xZ_pn-SzJag4D0vVfO6bKyxU66pXz09U4AMMGkRPdAXvHyUIiAAPap0A9eaVZO1A91hpZEWBsIpol_BRVz6LcIegsK8pmQyvmJ8sVjQ2bXe8YMp6MsfmaTqUsHafqJWJikf8KrOKZCyoMj72ea_z981prvbDRPMW7qR-2o2bC5nttOoKo6dNZGkDgZCphf7R4o68qyXp6nwNxWsub72AXMkpFf-yZ84e9IXhQwBKVaXTN-qZgB_kZZ-szRl3wV2p6Tl_mpj-tvo-x7kmNj_UYjL_rNlrfrtpzWRg3_jVcsslMNFdHBdGkjGVtvy-VtDQfmSDda23EyuzyjoKnMy0](https://www.plantuml.com/plantuml/png/bP9FgzD05CNt-HINR4pbFTxUrGirnLWJQvku3TF9fHr8PkhyeOHMwCP55wBhhWKNWXMwKVmw3SLlOQPHIULjcjqz-TsJSm-vLvf8RSe2K3eESirq1KQXLB1o01v362V0SlZptDt1IBAIo0g6M84t6lOQwhK_xZ_pn-SzJag4D0vVfO6bKyxU66pXz09U4AMMGkRPdAXvHyUIiAAPap0A9eaVZO1A91hpZEWBsIpol_BRVz6LcIegsK8pmQyvmJ8sVjQ2bXe8YMp6MsfmaTqUsHafqJWJikf8KrOKZCyoMj72ea_z981prvbDRPMW7qR-2o2bC5nttOoKo6dNZGkDgZCphf7R4o68qyXp6nwNxWsub72AXMkpFf-yZ84e9IXhQwBKVaXTN-qZgB_kZZ-szRl3wV2p6Tl_mpj-tvo-x7kmNj_UYjL_rNlrfrtpzWRg3_jVcsslMNFdHBdGkjGVtvy-VtDQfmSDda23EyuzyjoKnMy0)
+![image](https://github.com/user-attachments/assets/0b772870-ae7c-4ec8-bc8b-571fe64ab3fa)
 
-用户与订阅之间的一对多关系。一个用户可以有多个订阅，一个订阅只属于一个用户。*
+注: 上图是一个概念性的ER图，表示用户与订阅之间的一对多关系。一个用户可以有多个订阅，一个订阅只属于一个用户。
 
 表结构描述:
 
@@ -89,7 +89,6 @@
     *   职责：处理用户注册、登录、密码管理等。
     *   关键功能：用户数据持久化 (`users` 表交互)、密码哈希与验证、生成和验证认证令牌 (如 JWT)。
     *   技术：Spring Security (用于认证授权) 是合适的选型。
-    *   
     ![image](https://github.com/user-attachments/assets/35b37771-a905-4e8f-8c32-eaa66745f629)
 2.  订阅管理模块 (Subscription Management Module):
     *   职责：处理订阅数据的增删改查、批量操作。
