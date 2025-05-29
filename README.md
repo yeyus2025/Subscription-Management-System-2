@@ -42,43 +42,9 @@
 采用 MySQL 关系型数据库存储用户和订阅数据。
 
 实体关系图 (概念)
-```
-@startuml er
+[//www.plantuml.com/plantuml/png/bP9FgzD05CNt-HINR4pbFTxUrGirnLWJQvku3TF9fHr8PkhyeOHMwCP55wBhhWKNWXMwKVmw3SLlOQPHIULjcjqz-TsJSm-vLvf8RSe2K3eESirq1KQXLB1o01v362V0SlZptDt1IBAIo0g6M84t6lOQwhK_xZ_pn-SzJag4D0vVfO6bKyxU66pXz09U4AMMGkRPdAXvHyUIiAAPap0A9eaVZO1A91hpZEWBsIpol_BRVz6LcIegsK8pmQyvmJ8sVjQ2bXe8YMp6MsfmaTqUsHafqJWJikf8KrOKZCyoMj72ea_z981prvbDRPMW7qR-2o2bC5nttOoKo6dNZGkDgZCphf7R4o68qyXp6nwNxWsub72AXMkpFf-yZ84e9IXhQwBKVaXTN-qZgB_kZZ-szRl3wV2p6Tl_mpj-tvo-x7kmNj_UYjL_rNlrfrtpzWRg3_jVcsslMNFdHBdGkjGVtvy-VtDQfmSDda23EyuzyjoKnMy0](https://www.plantuml.com/plantuml/png/bP9FgzD05CNt-HINR4pbFTxUrGirnLWJQvku3TF9fHr8PkhyeOHMwCP55wBhhWKNWXMwKVmw3SLlOQPHIULjcjqz-TsJSm-vLvf8RSe2K3eESirq1KQXLB1o01v362V0SlZptDt1IBAIo0g6M84t6lOQwhK_xZ_pn-SzJag4D0vVfO6bKyxU66pXz09U4AMMGkRPdAXvHyUIiAAPap0A9eaVZO1A91hpZEWBsIpol_BRVz6LcIegsK8pmQyvmJ8sVjQ2bXe8YMp6MsfmaTqUsHafqJWJikf8KrOKZCyoMj72ea_z981prvbDRPMW7qR-2o2bC5nttOoKo6dNZGkDgZCphf7R4o68qyXp6nwNxWsub72AXMkpFf-yZ84e9IXhQwBKVaXTN-qZgB_kZZ-szRl3wV2p6Tl_mpj-tvo-x7kmNj_UYjL_rNlrfrtpzWRg3_jVcsslMNFdHBdGkjGVtvy-VtDQfmSDda23EyuzyjoKnMy0)
 
-entity users {
-  * INT id        // Primary Key (PK)
-  VARCHAR username UNIQUE // Unique Key (UK)
-  VARCHAR password_hash
-  VARCHAR email
-  TIMESTAMP created_at
-  TIMESTAMP updated_at
-}
-
-entity subscriptions {
-  * INT id        // Primary Key (PK)
-  INT user_id     // Foreign Key (FK)
-  VARCHAR name
-  VARCHAR category
-  VARCHAR billing_cycle
-  DATE start_date
-  DECIMAL amount
-  VARCHAR currency
-  VARCHAR notes
-  VARCHAR intention ENUM("renew", "cancel")
-  JSON associated_accounts
-  TIMESTAMP created_at
-  TIMESTAMP updated_at
-}
-
-' 定义关系
-' users (一端) ||--o{ subscriptions (多端, 可选)
-' "has" 关系名称
-users ||--o{ subscriptions : has
-
-@enduml
-```
-
-*注: 上图是一个概念性的ER图，表示用户与订阅之间的一对多关系。一个用户可以有多个订阅，一个订阅只属于一个用户。*
+用户与订阅之间的一对多关系。一个用户可以有多个订阅，一个订阅只属于一个用户。*
 
 表结构描述:
 
@@ -123,85 +89,18 @@ users ||--o{ subscriptions : has
     *   职责：处理用户注册、登录、密码管理等。
     *   关键功能：用户数据持久化 (`users` 表交互)、密码哈希与验证、生成和验证认证令牌 (如 JWT)。
     *   技术：Spring Security (用于认证授权) 是合适的选型。
-
-    ```svg
-    <svg width="400" height="150" xmlns="http://www.w3.org/2000/svg">
-      <rect x="10" y="10" rx="10" ry="10" width="180" height="130" style="fill:#e0f2f7;stroke:#01579b;stroke-width:2;"/>
-      <text x="100" y="35" font-family="Arial" font-size="16" fill="#01579b" text-anchor="middle" font-weight="bold">用户认证模块</text>
-      <line x1="10" y1="50" x2="190" y2="50" style="stroke:#01579b;stroke-width:1;"/>
-      <text x="20" y="70" font-family="Arial" font-size="12" fill="#01579b">- 用户注册/登录</text>
-      <text x="20" y="90" font-family="Arial" font-size="12" fill="#01579b">- 密码管理</text>
-      <text x="20" y="110" font-family="Arial" font-size="12" fill="#01579b">- 认证/授权</text>
-      <text x="20" y="130" font-family="Arial" font-size="12" fill="#01579b">- JWT 管理</text>
-
-      <rect x="210" y="10" rx="10" ry="10" width="180" height="130" style="fill:#fff3e0;stroke:#e65100;stroke-width:2;"/>
-       <text x="300" y="35" font-family="Arial" font-size="16" fill="#e65100" text-anchor="middle" font-weight="bold">数据库</text>
-       <line x1="210" y1="50" x2="390" y2="50" style="stroke:#e65100;stroke-width:1;"/>
-       <text x="220" y="75" font-family="Arial" font-size="12" fill="#e65100">- users 表</text>
-       <text x="220" y="95" font-family="Arial" font-size="12" fill="#e65100">- subscriptions 表</text>
-       <path d="M190 70 L210 70" stroke="#01579b" stroke-width="1" marker-end="url(#arrow)"/>
-       <defs>
-         <marker id="arrow" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
-           <path d="M0 0 L10 5 L0 10 Z" fill="#01579b" />
-         </marker>
-       </defs>
-    </svg>
-    ```
-
+    *   
+    ![image](https://github.com/user-attachments/assets/35b37771-a905-4e8f-8c32-eaa66745f629)
 2.  订阅管理模块 (Subscription Management Module):
     *   职责：处理订阅数据的增删改查、批量操作。
     *   关键功能：订阅数据持久化 (`subscriptions` 表交互)、数据验证、批量操作逻辑实现、数据过滤与分页。
     *   技术：Spring Data JPA (简化数据库操作)。
-
-    ```svg
-    <svg width="400" height="150" xmlns="http://www.w3.org/2000/svg">
-      <rect x="10" y="10" rx="10" ry="10" width="180" height="130" style="fill:#e8f5e9;stroke:#1b5e20;stroke-width:2;"/>
-      <text x="100" y="35" font-family="Arial" font-size="16" fill="#1b5e20" text-anchor="middle" font-weight="bold">订阅管理模块</text>
-      <line x1="10" y1="50" x2="190" y2="50" style="stroke:#1b5e20;stroke-width:1;"/>
-      <text x="20" y="70" font-family="Arial" font-size="12" fill="#1b5e20">- 订阅 CRUD</text>
-      <text x="20" y="90" font-family="Arial" font-size="12" fill="#1b5e20">- 批量操作</text>
-      <text x="20" y="110" font-family="Arial" font-size="12" fill="#1b5e20">- 数据验证</text>
-      <text x="20" y="130" font-family="Arial" font-size="12" fill="#1b5e20">- 过滤/分页</text>
-
-      <rect x="210" y="10" rx="10" ry="10" width="180" height="130" style="fill:#fff3e0;stroke:#e65100;stroke-width:2;"/>
-       <text x="300" y="35" font-family="Arial" font-size="16" fill="#e65100" text-anchor="middle" font-weight="bold">数据库</text>
-       <line x1="210" y1="50" x2="390" y2="50" style="stroke:#e65100;stroke-width:1;"/>
-       <text x="220" y="75" font-family="Arial" font-size="12" fill="#e65100">- subscriptions 表</text>
-       <path d="M190 70 L210 70" stroke="#1b5e20" stroke-width="1" marker-end="url(#arrow_green)"/>
-       <defs>
-         <marker id="arrow_green" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
-           <path d="M0 0 L10 5 L0 10 Z" fill="#1b5e20" />
-         </marker>
-       </defs>
-    </svg>
-    ```
-
+    ![image](https://github.com/user-attachments/assets/a3d12be9-6c86-4cc5-9727-e9a56900c372)
 3.  数据备份与恢复模块 (Data Backup & Recovery Module):
     *   职责：实现数据的自动备份和手动触发的备份/恢复功能。
     *   关键功能：定期导出数据库数据（例如为 SQL 文件或 JSON 文件），存储到安全位置；根据备份文件恢复数据库。可以考虑增量备份和全量备份策略。
     *   技术：可以利用数据库自带的工具 (如 `mysqldump`) 或通过编程方式读取数据并导出。需要考虑文件存储位置（本地文件系统、云存储等）和安全性。
-
-    ```svg
-    <svg width="400" height="150" xmlns="http://www.w3.org/2000/svg">
-      <rect x="10" y="10" rx="10" ry="10" width="180" height="130" style="fill:#e1f5fe;stroke:#0277bd;stroke-width:2;"/>
-      <text x="100" y="35" font-family="Arial" font-size="16" fill="#0277bd" text-anchor="middle" font-weight="bold">备份恢复模块</text>
-      <line x1="10" y1="50" x2="190" y2="50" style="stroke:#0277bd;stroke-width:1;"/>
-      <text x="20" y="70" font-family="Arial" font-size="12" fill="#0277bd">- 自动定时备份</text>
-      <text x="20" y="90" font-family="Arial" font-size="12" fill="#0277bd">- 手动备份/恢复</text>
-      <text x="20" y="110" font-family="Arial" font-size="12" fill="#0277bd">- 数据导出/导入</text>
-
-      <rect x="210" y="10" rx="10" ry="10" width="180" height="130" style="fill:#fff3e0;stroke:#e65100;stroke-width:2;"/>
-       <text x="300" y="35" font-family="Arial" font-size="16" fill="#e65100" text-anchor="middle" font-weight="bold">数据库</text>
-       <line x1="210" y1="50" x2="390" y2="50" style="stroke:#e65100;stroke-width:1;"/>
-       <text x="220" y="75" font-family="Arial" font-size="12" fill="#e65100">- 所有数据</text>
-       <path d="M190 70 L210 70" stroke="#0277bd" stroke-width="1" marker-end="url(#arrow_blue)"/>
-       <defs>
-         <marker id="arrow_blue" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
-           <path d="M0 0 L10 5 L0 10 Z" fill="#0277bd" />
-         </marker>
-       </defs>
-    </svg>
-    ```
+    ![image](https://github.com/user-attachments/assets/ccc815c0-c7f9-4a37-903b-f1d4814bcb78)
 
 ## 技术选型理由
 
