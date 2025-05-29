@@ -43,34 +43,40 @@
 
 实体关系图 (概念)
 
-```mermaid
-erDiagram
-    users {
-        INT id PK
-        VARCHAR username UK
-        VARCHAR password_hash
-        VARCHAR email
-        TIMESTAMP created_at
-        TIMESTAMP updated_at
-    }
+```
+@startuml er
 
-    subscriptions {
-        INT id PK
-        INT user_id FK
-        VARCHAR name
-        VARCHAR category
-        VARCHAR billing_cycle
-        DATE start_date
-        DECIMAL amount
-        VARCHAR currency
-        VARCHAR notes
-        VARCHAR intention ENUM("renew", "cancel")
-        JSON associated_accounts
-        TIMESTAMP created_at
-        TIMESTAMP updated_at
-    }
+entity users {
+  * INT id        // Primary Key (PK)
+  VARCHAR username UNIQUE // Unique Key (UK)
+  VARCHAR password_hash
+  VARCHAR email
+  TIMESTAMP created_at
+  TIMESTAMP updated_at
+}
 
-    users ||--o{ subscriptions : "has"
+entity subscriptions {
+  * INT id        // Primary Key (PK)
+  INT user_id     // Foreign Key (FK)
+  VARCHAR name
+  VARCHAR category
+  VARCHAR billing_cycle
+  DATE start_date
+  DECIMAL amount
+  VARCHAR currency
+  VARCHAR notes
+  VARCHAR intention ENUM("renew", "cancel")
+  JSON associated_accounts
+  TIMESTAMP created_at
+  TIMESTAMP updated_at
+}
+
+' 定义关系
+' users (一端) ||--o{ subscriptions (多端, 可选)
+' "has" 关系名称
+users ||--o{ subscriptions : has
+
+@enduml
 ```
 
 *注: 上图是一个概念性的ER图，表示用户与订阅之间的一对多关系。一个用户可以有多个订阅，一个订阅只属于一个用户。*
